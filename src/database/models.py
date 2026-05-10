@@ -15,7 +15,7 @@ class Conversation(Base):
     message = Column(Text, nullable=False)
     response = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.utcnow)
-    metadata = Column(JSON, default={})
+    extra_data = Column(JSON, default={})
 
 class Memory(Base):
     """Store extracted facts and memories"""
