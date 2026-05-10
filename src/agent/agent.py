@@ -1,10 +1,9 @@
 """Simple agent using LangChain LLM directly."""
 
-import os
 from typing import List
 from langchain_anthropic import ChatAnthropic
 from src.llm_router import LLMRouter
-from src.database.connection import get_session
+from src.database.connection import get_db
 from src.database.models import Memory, Task, Conversation
 from sqlalchemy import desc
 
@@ -22,7 +21,7 @@ class JpaAgent:
         llm, model_name = self.router.get_llm(user_message)
         
         # Store conversation
-        session = get_session()
+        session = get_db()
         conv = Conversation(
             user_id=user_id,
             user_message=user_message,
@@ -48,7 +47,7 @@ class JpaAgent:
 
     def get_conversation_history(self, user_id: str, limit: int = 10) -> List[dict]:
         """Retrieve conversation history."""
-        session = get_session()
+        session = get_db()
         conversations = session.query(Conversation).filter_by(
             user_id=user_id
         ).order_by(desc(Conversation.created_at)).limit(limit).all()
