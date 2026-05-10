@@ -12,7 +12,7 @@ import json
 import os
 from typing import Dict, List, Any
 from langchain_anthropic import ChatAnthropic
-from src.database.connection import get_session
+from src.database.connection import get_db
 from src.database.models import Memory
 from datetime import datetime, timedelta
 import logging
@@ -80,7 +80,7 @@ JSON:"""
 
     def store_facts(self, facts: List[Dict[str, Any]], user_id: str, mode: str = "insert"):
         """Store facts with debouncing to avoid duplicates."""
-        session = get_session()
+        session = get_db()
 
         for fact in facts:
             fact_text = fact.get("fact", "")
@@ -122,7 +122,7 @@ JSON:"""
 
     def get_memories(self, user_id: str, category: str = None, limit: int = 10) -> List[str]:
         """Retrieve memories for user."""
-        session = get_session()
+        session = get_db()
 
         query = session.query(Memory).filter_by(user_id=user_id)
         if category:

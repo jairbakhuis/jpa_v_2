@@ -8,7 +8,7 @@ from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
 from src.config import TIMEZONE, TELEGRAM_USER_ID
-from src.database.connection import get_session
+from src.database.connection import get_db
 from src.database.models import Task, Memory
 from src.integrations.telegram_bot import send_notification, send_daily_briefing
 from src.memory_utils import MemoryExtractor
@@ -20,7 +20,7 @@ scheduler = BackgroundScheduler(timezone=TIMEZONE)
 def check_reminders():
     """Check for due reminders and send notifications"""
     try:
-        session = get_session()
+        session = get_db()
         now = datetime.now()
 
         # Find tasks due now
@@ -58,7 +58,7 @@ def generate_daily_briefing():
         briefing = ""
 
         # Get tasks for today
-        session = get_session()
+        session = get_db()
         today = datetime.now().date()
         tasks = session.query(Task).filter(
             Task.completed == False,
