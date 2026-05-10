@@ -1,5 +1,8 @@
 """FastAPI entry point for JPA"""
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import logging
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
