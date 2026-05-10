@@ -1,6 +1,6 @@
 """PostgreSQL connection and session management"""
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import SQLAlchemyError
 import logging
@@ -47,7 +47,7 @@ def test_connection():
     """Test database connection"""
     try:
         with SessionLocal() as db:
-            db.execute("SELECT 1")
+            db.execute(text("SELECT 1"))
             logger.info("✓ Database connection successful")
             return True
     except Exception as e:
